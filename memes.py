@@ -1,15 +1,32 @@
-meme_dict = {
-            "CRINGE": "Algo excepcionalmente raro o embarazoso",
-            "LOL": "Una respuesta común a algo gracioso",
-            "ROFL": "una respuesta a una broma",
-            "SHEESH": "ligera desaprobación",
-            "CREEPY": "aterrador, siniestro",
-            "AGGRO":  "ponerse agresivo/enojado"
-            }
+import discord
+import random
+from discord.ext import commands
 
-word = input("Escribe una palabra que no entiendas: ").upper()
+intents = discord.Intents.default()
+intents.message_content = True
 
-if word in meme_dict.keys():
-    print(meme_dict[word])
-else:
-    print("Esa palabra no se encuentra en el diccionario de memes.")
+bot = commands.Bot(command_prefix='#', intents=intents)
+
+@bot.event
+async def on_ready():
+    print(f'We have logged in as {bot.user}')
+
+@bot.command()
+async def add(ctx, left: int, right: int):
+    """Adds two numbers together."""
+    await ctx.send(left + right)
+
+@bot.command()
+async def hello(ctx):
+    await ctx.send(f'Hola, soy un bot {bot.user}!')  
+
+@bot.command()
+async def heh(ctx, count_heh = 5):
+    await ctx.send("he" * count_heh)
+
+@bot.command(description='For when you wanna settle the score some other way')
+async def choose(ctx, *choices: str):
+    """Chooses between multiple choices."""
+    await ctx.send(random.choice(choices))
+
+bot.run("")
